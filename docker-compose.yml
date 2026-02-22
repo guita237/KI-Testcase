@@ -1,0 +1,73 @@
+
+services:
+  db:
+    image: postgres:14
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  flask-app:
+    build:
+      context: ./Backend
+    container_name: flask_app_container
+    env_file:
+      - .env
+    environment:
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY}
+      DATABASE_URL: ${DATABASE_URL}
+      FIREBASE_API_KEY: ${FIREBASE_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_EMAIL: ${SMTP_EMAIL}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      APP_NAME: ${APP_NAME}
+      FLASK_ENV: production
+      FIREBASE_CREDENTIALS_PATH : ${FIREBASE_CREDENTIALS_PATH}
+      FLASK_DEBUG: "0"  #  Debugging deaktivieren für Produktion
+    depends_on:
+      db:
+        condition: service_healthy  #  Flask startet erst, wenn die DB bereit ist
+    ports:
+      - "5000:5000"
+    volumes:
+      - sentence_transformer_cache:/root/.cache/torch/sentence_transformers/
+      - ./Backend/${FIREBASE_CREDENTIALS_PATH}:/app/${FIREBASE_CREDENTIALS_PATH}:ro
+    command: >
+      sh -c "flask db upgrade &&
+             gunicorn -b 0.0.0.0:5000 --timeout 120 main:app"
+    networks:
+      - backend
+
+  frontend:
+    build:
+      context: ./Frontend
+    container_name: frontend_nginx
+    restart: always
+    ports:
+      - "8084:80"
+    depends_on:
+      - flask-app
+    networks:
+      - backend
+
+volumes:
+    postgres_data:
+    sentence_transformer_cache:
+
+networks:
+    backend:
+     driver: bridge

@@ -1,0 +1,95 @@
+####################################
+# 🔐 ENV & SECRETS
+####################################
+.env
+*.env
+Backend/.env
+Frontend/.env
+
+# Firebase credentials
+
+Backend/app/Firebase/*.json
+
+# API keys / private configs
+*.pem
+*.key
+*.crt
+*.p12
+
+####################################
+# 🐍 PYTHON (Flask)
+####################################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+.venv/
+venv/
+env/
+
+instance/
+*.sqlite3
+
+# Migrations cache
+Backend/migrations/__pycache__/
+
+####################################
+# 🔥 SentenceTransformer cache
+####################################
+sentence_transformer_cache/
+
+####################################
+# 🐳 Docker
+####################################
+*.log
+docker-compose.override.yml
+
+####################################
+# ⚛️ FRONTEND (React + Vite)
+####################################
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.vite/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+####################################
+# 🏗️ BUILD FILES
+####################################
+build/
+dist/
+coverage/
+
+####################################
+# 🧠 IDE / OS
+####################################
+.idea/
+.vscode/
+*.iml
+
+.DS_Store
+Thumbs.db
+
+####################################
+# 🌍 Terraform
+####################################
+Terraform/.terraform/
+Terraform/*.tfstate
+Terraform/*.tfstate.*
+Terraform/crash.log
+
+####################################
+# 🧪 Tests
+####################################
+.pytest_cache/
+.coverage
+htmlcov/
+
+####################################
+# Generated files
+####################################
+Backend/generated_scripts/

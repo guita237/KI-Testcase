@@ -1,0 +1,21 @@
+server {
+    listen 80;
+
+    server_name _;
+
+    location / {
+        proxy_pass http://flask-app:5000;  # Weiterleitung der Anfragen an Flask
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # ⚡ Timeout-Einstellungen für lange Anfragen (z. B. KI-Operationen)
+        proxy_connect_timeout 600;
+        proxy_send_timeout 600;
+        proxy_read_timeout 600;
+    }
+
+    error_log /var/log/nginx/error.log;  # 📜 Fehler-Logging aktivieren
+    access_log /var/log/nginx/access.log;  # 📜 Zugriffs-Logging aktivieren
+}

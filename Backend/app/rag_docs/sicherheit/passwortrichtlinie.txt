@@ -1,0 +1,5 @@
+Passwortrichtlinien:
+- Mindestlänge: 12 Zeichen
+- Erforderlich: 1 Großbuchstabe, 1 Sonderzeichen, 1 Zahl
+- Keine Wiederverwendung der letzten 5 Passwörter
+- Änderung alle 90 Tage obligatorisch

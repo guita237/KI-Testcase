@@ -1,0 +1,10 @@
+UI/UX-Standards für Login:
+- Farbcode:
+  - Erfolg: #28a745 (Grün)
+  - Fehler: #dc3545 (Rot)
+- Platzhalter:
+  - Email: "beispiel@domain.de"
+  - Passwort: 12+ Zeichen mit Sonderzeichen
+- Barrierefreiheit:
+  - WCAG 2.1 AA konform
+  - Alt-Texte für alle Icons
